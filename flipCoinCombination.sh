@@ -1,35 +1,48 @@
-#!/bin/bash -x
+#!/bin/bash 
 echo " Wellcome flip coin simulator "
 
 #CONSTANT
-HEAD=0
-
-#VARIABLES
-headCount=0
-tailCount=0
+isHEAD=0
+NUMBER_OF_COIN=2
 
 #TO DECLARE DICTIONARY
-declare -A singletFlip
+declare -A doubletFlip
 
-#USER INPUT 
+#TO USER INPUT
 read -p "Enter the Number of Coin Flip : " numberOfCoinFlip
 
-#TO STORE HEAD COUNT AND TAIL COUNT IN DICTIONARY
-for(( count=0; count<$numberOfCoinFlip; count++ ))
-do
-   FlipCoin=$(( RANDOM % 2 ))
+#TO FUNCTION DOUBLET
+function doublet()
+{
+   for(( count=0; count<$numberOfCoinFlip; count++ ))
+   do
+      for(( countCoin=0; countCoin<$NUMBER_OF_COIN; countCoin++ ))
+      do
+         flipCoin=$(( RANDOM % 2 ))
 
-   if [ $FlipCoin -eq $HEAD ]
-   then
-      singletFlip[HEAD]=$((++headCount))
-   else
-      singletFlip[TAIL]=$((++tailCount))
-   fi
-done
+         if [ $flipCoin -eq $isHEAD ]
+         then
+            coinSide+=H
+         else
+            coinSide+=T
+         fi
+		done
+		((doubletFlip[$coinSide]++))
+		coinSide=""
+	done
+}
 
-#TO PERCENTAGE
-singletHeadPercentage=`awk 'BEGIN{printf("%0.2f", '$headCount' * 100 / '$numberOfCoinFlip' )}'`
-singletTailPercentage=`awk 'BEGIN{printf("%0.2f", '$tailCount' *100 / '$numberOfCoinFlip' )}'`
+#TO TOTAL PERCENTAGE OF DOUBLET COMBINATION
+function totalDoubletPercentage()
+{
+   for index in ${!doubletFlip[@]}
+   do
+      doubletFlip[$index]=`awk 'BEGIN{printf("%0.2f", '${doubletFlip[$index]}' * 100 / '$numberOfCoinFlip' )}'`
+   done
+}
 
-echo "To single head percentage and head count:$headCount : " $singletHeadPercentage
-echo "To single tail percentage and tail count:$tailCount : " $singletTailPercentage
+#TO FUNCTION CALL 
+doublet
+totalDoubletPercentage
+echo "  " ${!doubletFlip[@]}
+echo ${doubletFlip[@]}
