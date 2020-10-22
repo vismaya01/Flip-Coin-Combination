@@ -50,8 +50,10 @@ function totalPercentageFlip()
 #CHECKING HEADS OR TAILS
 read -p "Enter number of times you want to flip:" times
 read -p "Enter choice 1)Singlet 2)Doublet 3)Triplet and so on:" coins
+
 totalFlip $times $coins
 totalPercentageFlip
+
 echo "All head and tail combination:${!flipStore[@]}"
 echo "percentage of all combination:${flipStore[@]}"
 echo "Max winning combination      :" $maximum "-" $key
