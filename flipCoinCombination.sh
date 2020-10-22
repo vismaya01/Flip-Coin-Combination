@@ -56,4 +56,8 @@ totalPercentageFlip
 
 echo "All head and tail combination:${!flipStore[@]}"
 echo "percentage of all combination:${flipStore[@]}"
+
+sort=( $( printf "%s\n" "${flipStore[@]}" | sort -n ) )
+echo "sorted order" ${sort[@]}
+
 echo "Max winning combination      :" $maximum "-" $key
