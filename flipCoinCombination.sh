@@ -31,6 +31,5 @@ done
 singletHeadPercentage=`awk 'BEGIN{printf("%0.2f", '$headCount' * 100 / '$numberOfCoinFlip' )}'`
 singletTailPercentage=`awk 'BEGIN{printf("%0.2f", '$tailCount' *100 / '$numberOfCoinFlip' )}'`
 
-#TO PRINT
 echo "To single head percentage and head count:$headCount : " $singletHeadPercentage
 echo "To single tail percentage and tail count:$tailCount : " $singletTailPercentage
