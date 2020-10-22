@@ -3,16 +3,16 @@ echo " Wellcome flip coin simulator "
 
 #CONSTANT
 isHEAD=0
-NUMBER_OF_COIN=2
+NUMBER_OF_COIN=3
 
 #TO DECLARE DICTIONARY
-declare -A doubletFlip
+declare -A tripletFlip
 
 #TO USER INPUT
 read -p "Enter the Number of Coin Flip : " numberOfCoinFlip
 
-#TO FUNCTION DOUBLET
-function doublet()
+#TO FUNCTION TRIPLET
+function triplet()
 {
    for(( count=0; count<$numberOfCoinFlip; count++ ))
    do
@@ -27,22 +27,23 @@ function doublet()
             coinSide+=T
          fi
 		done
-		((doubletFlip[$coinSide]++))
+		((tripletFlip[$coinSide]++))
 		coinSide=""
 	done
 }
 
-#TO TOTAL PERCENTAGE OF DOUBLET COMBINATION
-function totalDoubletPercentage()
+#TO TOTAL PERCENTAGE OF TRIPLET COMBINATION
+function totalTripletPercentage()
 {
-   for index in ${!doubletFlip[@]}
+   for index in ${!tripletFlip[@]}
    do
-      doubletFlip[$index]=`awk 'BEGIN{printf("%0.2f", '${doubletFlip[$index]}' * 100 / '$numberOfCoinFlip' )}'`
+      tripletFlip[$index]=`awk 'BEGIN{printf("%0.2f", '${tripletFlip[$index]}' * 100 / '$numberOfCoinFlip' )}'`
    done
+
 }
 
 #TO FUNCTION CALL 
-doublet
-totalDoubletPercentage
-echo "  " ${!doubletFlip[@]}
-echo ${doubletFlip[@]}
+triplet
+totalTripletPercentage
+echo "  " ${!tripletFlip[@]}
+echo ${tripletFlip[@]}
