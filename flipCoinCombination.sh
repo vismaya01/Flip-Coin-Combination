@@ -1,49 +1,57 @@
 #!/bin/bash 
 echo " Wellcome flip coin simulator "
 
-#CONSTANT
-isHEAD=0
-NUMBER_OF_COIN=3
+#DECLARE A DICTIONARY
+declare -A flipStore
 
-#TO DECLARE DICTIONARY
-declare -A tripletFlip
+#VARIABLES
+isFlip=0
+maximum=0
+temp=0
 
-#TO USER INPUT
-read -p "Enter the Number of Coin Flip : " numberOfCoinFlip
-
-#TO FUNCTION TRIPLET
-function triplet()
+#TO FUNCTION TO FIND HEAD AND TAIL COMBINATION
+function totalFlip()
 {
-   for(( count=0; count<$numberOfCoinFlip; count++ ))
-   do
-      for(( countCoin=0; countCoin<$NUMBER_OF_COIN; countCoin++ ))
-      do
-         flipCoin=$(( RANDOM % 2 ))
-
-         if [ $flipCoin -eq $isHEAD ]
-         then
-            coinSide+=H
-         else
-            coinSide+=T
-         fi
+	for((index=0; index<$1; index++))
+	do
+		side=""
+		for((indexOne=0; indexOne<$2; indexOne++))
+		do
+			#GENERATE RANDOM NUMBER
+			flipCoin=$((RANDOM%2))
+			if [ $flipCoin -eq $isFlip ]
+			then
+				side+=H
+			else
+				side+=T
+			fi
 		done
-		((tripletFlip[$coinSide]++))
-		coinSide=""
+		flipStore[$side]=$((${flipStore[$side]}+1))
+	done
+	echo "Count of all combination     :${flipStore[@]}"
+}
+
+
+#FUNCTION TO FIND PERCENTAGE AND ALSO FIND MAXIMUM HEAD OR TAIL WINNING COMBINANTION
+function totalPercentageFlip()
+{
+	for count in ${!flipStore[@]}
+	do
+		flipStore[$count]=$(( ${flipStore[$count]} *100 / $times ))
+		temp=${flipStore[$count]}
+		if [ $temp -gt $maximum ]
+		then
+			maximum=$temp
+			key=$count
+		fi
 	done
 }
 
-#TO TOTAL PERCENTAGE OF TRIPLET COMBINATION
-function totalTripletPercentage()
-{
-   for index in ${!tripletFlip[@]}
-   do
-      tripletFlip[$index]=`awk 'BEGIN{printf("%0.2f", '${tripletFlip[$index]}' * 100 / '$numberOfCoinFlip' )}'`
-   done
-
-}
-
-#TO FUNCTION CALL 
-triplet
-totalTripletPercentage
-echo "  " ${!tripletFlip[@]}
-echo ${tripletFlip[@]}
+#CHECKING HEADS OR TAILS
+read -p "Enter number of times you want to flip:" times
+read -p "Enter choice 1)Singlet 2)Doublet 3)Triplet and so on:" coins
+totalFlip $times $coins
+totalPercentageFlip
+echo "All head and tail combination:${!flipStore[@]}"
+echo "percentage of all combination:${flipStore[@]}"
+echo "Max winning combination      :" $maximum "-" $key
